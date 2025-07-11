@@ -208,8 +208,8 @@ Napi::Value ApplyAcrylicEffect(const Napi::CallbackInfo& info) {
     DWORD build = GetWindowsBuild();
     if (IsWindowsVersionOrGreater(10, 0, 22000) || build >= 22000) {
         // Convert RGB to the format expected by Windows API
-        // The format matches exactly what acrylic-window.cpp uses
-        DWORD cr = ((borderVis ? 0xFF : 0x00) << 24)
+        // FIXED LOGIC: Use 0x00 for visible, 0xFF for hidden
+        DWORD cr = ((borderVis ? 0x00 : 0xFF) << 24)  // Fixed: 0x00 for visible, 0xFF for hidden
             | ((borderRGB & 0x0000FF) << 16)
             | (borderRGB & 0x00FF00)
             | ((borderRGB & 0xFF0000) >> 16);

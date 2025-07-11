@@ -45,23 +45,3 @@ module.exports = {
     isSupported,
     getWindowsBuildNumber
 };
-
-// Example usage:
-if (require.main === module) {
-    const hwnd = 1377636; // Replace with actual window handle
-
-    try {
-        const result = applyAcrylicEffect({
-            hwnd: hwnd,
-            type: "acrylic",
-            corner: "round",
-            opacity: 200,       
-            tintColor: "ffffff",
-            borderColor: "000000",
-            borderVisible: false   
-        });
-        console.log("Individual test result:", result);
-    } catch (error) {
-        console.error("Individual test error:", error.message);
-    }
-}
