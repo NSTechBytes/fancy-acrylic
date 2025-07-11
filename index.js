@@ -9,6 +9,7 @@ const addon = require('./build/Release/fancy-acrylic');
  * @param {number} [options.opacity=204] - Opacity value (0-255)
  * @param {string} [options.tintColor] - Tint color in hex format (RRGGBB)
  * @param {string} [options.borderColor] - Border color in hex format (RRGGBB)
+ * @param {boolean} [options.borderVisible=true] - Whether border should be visible
  * @returns {boolean} True if successful
  */
 function applyAcrylicEffect(options) {
@@ -47,24 +48,20 @@ module.exports = {
 
 // Example usage:
 if (require.main === module) {
-  console.log("Acrylic effects supported:", isSupported());
-  console.log("Windows build number:", getWindowsBuildNumber());
+    const hwnd = 1377636; // Replace with actual window handle
 
-  // Example: Apply acrylic effect to a window
-  // You would need to get the actual window handle (HWND)
-  // const hwnd = 0x12345678; // Replace with actual window handle
-  //
-  try {
-    const result = applyAcrylicEffect({
-      hwnd: 1377636,
-      type: "acrylic",
-      corner: "round",
-      opacity: 10,
-      tintColor: "FF0000", // Red tint
-      borderColor: "000000", // Green border
-    });
-    console.log("Effect applied successfully:", result);
-  } catch (error) {
-    console.error("Error applying effect:", error.message);
-  }
+    try {
+        const result = applyAcrylicEffect({
+            hwnd: hwnd,
+            type: "acrylic",
+            corner: "round",
+            opacity: 200,       
+            tintColor: "ffffff",
+            borderColor: "000000",
+            borderVisible: false   
+        });
+        console.log("Individual test result:", result);
+    } catch (error) {
+        console.error("Individual test error:", error.message);
+    }
 }

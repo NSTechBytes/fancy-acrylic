@@ -129,9 +129,14 @@ Napi::Value ApplyAcrylicEffect(const Napi::CallbackInfo& info) {
         hasTintColor = true;
     }
     
-    // Get border color (optional)
+    // Get border visibility (default true)
+    bool borderVis = true;
+    if (options.Has("borderVisible") && options.Get("borderVisible").IsBoolean()) {
+        borderVis = options.Get("borderVisible").As<Napi::Boolean>().Value();
+    }
+    
+    // Get border color (default white)
     DWORD borderRGB = 0xFFFFFF;
-    bool hasBorderColor = false;
     if (options.Has("borderColor") && options.Get("borderColor").IsString()) {
         std::string borderStr = options.Get("borderColor").As<Napi::String>().Utf8Value();
         std::istringstream iss(borderStr);
@@ -140,7 +145,6 @@ Napi::Value ApplyAcrylicEffect(const Napi::CallbackInfo& info) {
             Napi::TypeError::New(env, "borderColor must be a valid hex color (RRGGBB)").ThrowAsJavaScriptException();
             return env.Null();
         }
-        hasBorderColor = true;
     }
     
     // Validate window handle
@@ -174,8 +178,8 @@ Napi::Value ApplyAcrylicEffect(const Napi::CallbackInfo& info) {
     if (hasTintColor) {
         policy.GradientColor = (static_cast<DWORD>(opacity) << 24) | tintRGB;
     } else {
-        // Don't set any color - let the system use default
-        policy.GradientColor = 0;
+        // Use default tint color with specified opacity
+        policy.GradientColor = (static_cast<DWORD>(opacity) << 24) | tintRGB;
     }
     
     WINDOWCOMPOSITIONATTRIBDATA data = {};
@@ -200,23 +204,22 @@ Napi::Value ApplyAcrylicEffect(const Napi::CallbackInfo& info) {
         sizeof(pref)
     );
     
-    // Apply border color if provided and on Windows 11+
-    if (hasBorderColor) {
-        DWORD build = GetWindowsBuild();
-        if (IsWindowsVersionOrGreater(10, 0, 22000) || build >= 22000) {
-            // Convert RGB to BGR format for Windows API
-            DWORD cr = (0xFF << 24) // Alpha channel - fully opaque
-                | ((borderRGB & 0xFF0000) >> 16)  // Red -> Blue
-                | (borderRGB & 0x00FF00)          // Green stays
-                | ((borderRGB & 0x0000FF) << 16); // Blue -> Red
-            
-            hr = DwmSetWindowAttribute(
-                hwnd,
-                DWMWA_BORDER_COLOR,
-                &cr,
-                sizeof(cr)
-            );
-        }
+    // Apply border color - this should always be applied on Windows 11+
+    DWORD build = GetWindowsBuild();
+    if (IsWindowsVersionOrGreater(10, 0, 22000) || build >= 22000) {
+        // Convert RGB to the format expected by Windows API
+        // The format matches exactly what acrylic-window.cpp uses
+        DWORD cr = ((borderVis ? 0xFF : 0x00) << 24)
+            | ((borderRGB & 0x0000FF) << 16)
+            | (borderRGB & 0x00FF00)
+            | ((borderRGB & 0xFF0000) >> 16);
+        
+        hr = DwmSetWindowAttribute(
+            hwnd,
+            DWMWA_BORDER_COLOR,
+            &cr,
+            sizeof(cr)
+        );
     }
     
     return Napi::Boolean::New(env, true);
