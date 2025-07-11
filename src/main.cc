@@ -60,7 +60,7 @@ DWORD GetWindowsBuild()
     return 0;
 }
 
-Napi::Value ApplyAcrylicEffect(const Napi::CallbackInfo& info) {
+Napi::Value applyEffect(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
     
     if (info.Length() < 1) {
@@ -246,7 +246,7 @@ Napi::Value GetWindowsBuildNumber(const Napi::CallbackInfo& info) {
 
 #else
 // Non-Windows stub implementations
-Napi::Value ApplyAcrylicEffect(const Napi::CallbackInfo& info) {
+Napi::Value applyEffect(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
     Napi::Error::New(env, "Acrylic effects are only supported on Windows").ThrowAsJavaScriptException();
     return env.Null();
@@ -264,7 +264,7 @@ Napi::Value GetWindowsBuildNumber(const Napi::CallbackInfo& info) {
 #endif
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
-    exports.Set("applyAcrylicEffect", Napi::Function::New(env, ApplyAcrylicEffect));
+    exports.Set("applyEffect", Napi::Function::New(env, applyEffect));
     exports.Set("isSupported", Napi::Function::New(env, IsSupported));
     exports.Set("getWindowsBuildNumber", Napi::Function::New(env, GetWindowsBuildNumber));
     return exports;

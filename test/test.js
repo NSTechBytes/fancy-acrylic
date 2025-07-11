@@ -1,9 +1,9 @@
-const { applyAcrylicEffect } = require("../index");
+const { applyEffect } = require("../index");
 
 const hwnd = 1508708; // Replace with actual window handle
 
 try {
-  const result = applyAcrylicEffect({
+  const result = applyEffect({
     hwnd: hwnd,
     type: "acrylic",
     corner: "round",

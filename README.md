@@ -26,7 +26,7 @@ npm run build
 ## Usage
 
 ```javascript
-const { applyAcrylicEffect, isSupported, getWindowsBuildNumber } = require('./index.js');
+const { applyEffect, isSupported, getWindowsBuildNumber } = require('./index.js');
 
 // Check if acrylic effects are supported
 console.log('Supported:', isSupported());
@@ -35,7 +35,7 @@ console.log('Supported:', isSupported());
 console.log('Build:', getWindowsBuildNumber());
 
 // Apply acrylic effect
-const result = applyAcrylicEffect({
+const result = applyEffect({
     hwnd: 0x12345678, // Window handle as number
     type: 'acrylic',  // 'blur' or 'acrylic'
     corner: 'round',  // 'none', 'round', or 'roundsmall'
@@ -47,7 +47,7 @@ const result = applyAcrylicEffect({
 
 ## API
 
-### `applyAcrylicEffect(options)`
+### `applyEffect(options)`
 
 Applies acrylic or blur effect to a window.
 
@@ -64,7 +64,7 @@ Applies acrylic or blur effect to a window.
 
 **Example:**
 ```javascript
-applyAcrylicEffect({
+applyEffect({
     hwnd: windowHandle,
     type: 'acrylic',
     corner: 'round',

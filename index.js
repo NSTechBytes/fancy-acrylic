@@ -12,7 +12,7 @@ const addon = require('./build/Release/fancy-acrylic');
  * @param {boolean} [options.borderVisible=true] - Whether border should be visible
  * @returns {boolean} True if successful
  */
-function applyAcrylicEffect(options) {
+function applyEffect(options) {
     if (!options || typeof options !== 'object') {
         throw new Error('Options object is required');
     }
@@ -21,7 +21,7 @@ function applyAcrylicEffect(options) {
         throw new Error('hwnd must be a number');
     }
     
-    return addon.applyAcrylicEffect(options);
+    return addon.applyEffect(options);
 }
 
 /**
@@ -41,7 +41,7 @@ function getWindowsBuildNumber() {
 }
 
 module.exports = {
-    applyAcrylicEffect,
+    applyEffect,
     isSupported,
     getWindowsBuildNumber
 };
