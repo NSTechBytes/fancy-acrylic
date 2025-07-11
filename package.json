@@ -6,7 +6,7 @@
   "scripts": {
     "install": "node-gyp-build",
     "build": "node-gyp-build",
-    "test" : "node test/test.js"
+    "test": "node test/test.js"
   },
   "keywords": [
     "windows",
@@ -15,8 +15,16 @@
     "native",
     "addon"
   ],
-  "author": "",
+  "author": "Nasir Shahbaz <nstechbytes@gmail.com> (https://github.com/NSTechBytes)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NSTechBytes/fancy-acrylic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NSTechBytes/fancy-acrylic/issues"
+  },
+  "homepage": "https://github.com/NSTechBytes/fancy-acrylic#readme",
   "dependencies": {
     "node-addon-api": "^8.2.1",
     "node-gyp-build": "^4.8.2"
